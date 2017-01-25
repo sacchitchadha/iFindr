@@ -60,11 +60,25 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
 }
   
   @IBAction func swapText(_ sender: AnyObject) {
-    
+    if let text = textView.text, let findText = findTextField.text, let replaceText = replaceTextField.text {
+      textView.text = text.replacingOccurrences(of: findText,with: replaceText, options: [], range: nil)
+      findTextField.text = nil
+      replaceTextField.text = nil
+      view.endEditing(true)
+      moveViewDown()
+    }
   }
   
   @IBAction func sharePoem(_ sender: AnyObject) {
-    
+    if textView.text.isEmpty {
+      return
+    }
+    let activityViewController = UIActivityViewController(activityItems:
+      [textView.text], applicationActivities: nil)
+    let excludeActivities = [
+      UIActivityType.assignToContact, UIActivityType.saveToCameraRoll, UIActivityType.addToReadingList, UIActivityType.postToFlickr,UIActivityType.postToVimeo]
+    activityViewController.excludedActivityTypes = excludeActivities
+    present(activityViewController, animated: true, completion: nil)
   }
   
   
